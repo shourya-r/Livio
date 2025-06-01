@@ -37,6 +37,13 @@ export const signup = async (req, res) => {
         message: "Password is too weak",
       });
     }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered",
+      });
+    }
 
     const newUser = await User.create({
       name,
