@@ -7,6 +7,7 @@ export const useAuthStore = create((set) => ({
   authUser: null,
   checkingAuth: true,
   loading: false,
+
   // signs the user up and sets the authUser state
   signup: async (signupData) => {
     try {
@@ -24,6 +25,22 @@ export const useAuthStore = create((set) => ({
     }
   },
 
+  // logs the user in and sets the authUser state
+  login: async (loginData) => {
+    try {
+      set({ loading: true });
+      const res = await axiosInstance.post("/auth/login", loginData);
+      set({ authUser: res.data.user });
+      toast.success("Login successful!");
+    } catch (error) {
+      console.error("Error during login:", error);
+      toast.error(
+        error.response.data.message || "Login failed. Please try again."
+      );
+    } finally {
+      set({ loading: false });
+    }
+  },
   // logs the user out
   logout: async () => {
     try {
