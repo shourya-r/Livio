@@ -32,7 +32,7 @@ const HomePage = () => {
 
   return (
     <div
-      className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100
+      className="flex flex-col lg:flex-row min-h-screen bg-gray-50
 		 overflow-hidden
 		"
     >
@@ -61,15 +61,15 @@ export default HomePage;
 
 const NoMoreProfiles = () => (
   <div className="flex flex-col items-center justify-center h-full text-center p-8">
-    <div className="bg-blue-100 rounded-full p-6 mb-6">
+    <div className="bg-blue-100 rounded-full p-8 mb-6 shadow-lg">
       <Frown className="text-blue-600" size={60} />
     </div>
-    <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+    <h2 className="text-3xl font-bold text-blue-600 mb-4">
       No more profiles available
     </h2>
-    <p className="text-lg text-gray-600 mb-6 max-w-md">
+    <p className="text-lg text-gray-700 mb-6 max-w-md font-medium">
       You've seen all the available roommate profiles. Check back later for new
-      listings!
+      listings! ✨
     </p>
   </div>
 );
@@ -77,17 +77,17 @@ const NoMoreProfiles = () => (
 const LoadingUI = () => {
   return (
     <div className="relative w-full max-w-sm h-[32rem]">
-      <div className="w-96 h-[32rem] rounded-xl overflow-hidden shadow-lg bg-white border border-gray-200">
-        <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="w-96 h-[32rem] rounded-2xl overflow-hidden shadow-xl bg-white border border-gray-200">
+        <div className="w-full h-full bg-gray-50">
           <div className="absolute bottom-0 left-0 right-0 p-6">
             <div className="space-y-4">
-              <div className="h-7 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-              <div className="h-16 bg-gray-200 rounded animate-pulse"></div>
-              <div className="flex gap-2">
-                <div className="h-6 bg-gray-200 rounded-full w-20 animate-pulse"></div>
-                <div className="h-6 bg-gray-200 rounded-full w-24 animate-pulse"></div>
-                <div className="h-6 bg-gray-200 rounded-full w-20 animate-pulse"></div>
+              <div className="h-8 bg-gray-200 rounded-xl w-3/4 animate-pulse"></div>
+              <div className="h-5 bg-gray-200 rounded-xl w-1/2 animate-pulse"></div>
+              <div className="h-20 bg-gray-200 rounded-xl animate-pulse"></div>
+              <div className="flex gap-3">
+                <div className="h-7 bg-gray-200 rounded-full w-20 animate-pulse"></div>
+                <div className="h-7 bg-gray-200 rounded-full w-24 animate-pulse"></div>
+                <div className="h-7 bg-gray-200 rounded-full w-20 animate-pulse"></div>
               </div>
             </div>
           </div>
