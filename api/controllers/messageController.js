@@ -1,4 +1,5 @@
 import Message from "../models/MessageModel.js";
+import { getIO, getConnectedUsers } from "../socket/socket.server.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -10,10 +11,29 @@ export const sendMessage = async (req, res) => {
       content,
     });
 
-    //TODO: SEND THE MESSAGE IN REAL TIME => SOCKET.IO
+    // Populate sender information for the socket emission
+    const populatedMessage = await Message.findById(newMessage._id)
+      .populate('sender', 'username profilePicture')
+      .populate('receiver', 'username profilePicture');
+
+    // Send the message in real time via Socket.IO
+    const io = getIO();
+    const connectedUsers = getConnectedUsers();
+    
+    // Get the receiver's socket ID
+    const receiverSocketId = connectedUsers.get(receiverId.toString());
+    
+    if (receiverSocketId) {
+      console.log(`Emitting newMessage to receiver ${receiverId} at socket ${receiverSocketId}`);
+      console.log('Message being emitted:', populatedMessage);
+      io.to(receiverSocketId).emit('newMessage', populatedMessage);
+    } else {
+      console.log(`Receiver ${receiverId} is not connected. Connected users:`, Array.from(connectedUsers.keys()));
+    }
+
     res.status(201).json({
       success: true,
-      message: newMessage,
+      message: populatedMessage,
     });
   } catch (error) {
     console.log("Error in sendMessage: ", error);

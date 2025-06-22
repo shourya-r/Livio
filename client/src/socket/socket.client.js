@@ -1,13 +1,17 @@
 import io from "socket.io-client";
 
 const SOCKET_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:5000/api" : "/";
+  import.meta.env.MODE === "development" ? "http://localhost:5000" : "";
 
 let socket = null;
 
 // Initializes the socket connection with the server
 export const initializeSocket = (userId) => {
-  console.log("Initializing socket with userId:", userId);
+  console.log("=== INITIALIZING SOCKET ===");
+  console.log("Socket URL:", SOCKET_URL);
+  console.log("User ID:", userId);
+  console.log("Environment:", import.meta.env.MODE);
+  
   if (socket) {
     console.log("Disconnecting existing socket");
     socket.disconnect();
@@ -17,6 +21,7 @@ export const initializeSocket = (userId) => {
     auth: {
       userId,
     },
+    transports: ['websocket', 'polling'],
   });
 
   socket.on("connect", () => {
@@ -30,6 +35,11 @@ export const initializeSocket = (userId) => {
 
   socket.on("connect_error", (error) => {
     console.error("Socket connection error:", error);
+    console.error("Error details:", {
+      message: error.message,
+      description: error.description,
+      context: error.context,
+    });
   });
 
   socket.on("disconnect", (reason) => {
@@ -38,7 +48,12 @@ export const initializeSocket = (userId) => {
 
   // Add listener for newMessage events at socket level for debugging
   socket.on("newMessage", (message) => {
-    console.log("Socket received newMessage event:", message);
+    console.log("=== SOCKET RECEIVED NEW MESSAGE ===");
+    console.log("Message:", message);
+    console.log("Message ID:", message._id);
+    console.log("Sender:", message.sender);
+    console.log("Receiver:", message.receiver);
+    console.log("Content:", message.content);
   });
 };
 
