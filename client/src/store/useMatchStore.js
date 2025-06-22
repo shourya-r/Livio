@@ -142,17 +142,8 @@ export const useMatchStore = create((set, get) => ({
 
           // Show toast notification only if match was actually added
           toast.success("Roommate Match!", {
-            duration: 5000,
+            duration: 3000,
             position: "top-center",
-            style: {
-              background: "#3b82f6",
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: "18px",
-              padding: "20px",
-              borderRadius: "12px",
-              zIndex: 10000,
-            },
           });
 
           // Also try a browser notification as backup

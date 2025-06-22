@@ -19,7 +19,12 @@ export const initializeSocket = (userId) => {
   });
 
   socket.on("connect", () => {
-    console.log("Socket connected successfully with ID:", socket.id);
+    console.log(
+      "Socket connected successfully with ID:",
+      socket.id,
+      "for user:",
+      userId
+    );
   });
 
   socket.on("connect_error", (error) => {
@@ -29,14 +34,30 @@ export const initializeSocket = (userId) => {
   socket.on("disconnect", (reason) => {
     console.log("Socket disconnected:", reason);
   });
+
+  // Add listener for newMessage events at socket level for debugging
+  socket.on("newMessage", (message) => {
+    console.log("Socket received newMessage event:", message);
+  });
 };
 
 // Returns the socket instance
 export const getSocket = () => {
-  if (!socket) {
-    throw new Error("Socket is not initialized. Call initializeSocket first.");
-  }
   return socket;
+};
+
+// Check if socket is connected and ready
+export const isSocketReady = () => {
+  const ready = socket && socket.connected;
+  console.log(
+    "Socket ready check:",
+    ready,
+    "socket:",
+    !!socket,
+    "connected:",
+    socket?.connected
+  );
+  return ready;
 };
 
 // Disconnects the socket connection
