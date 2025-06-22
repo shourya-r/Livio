@@ -37,10 +37,12 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/matches", matchRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/client/dist")));
+  // Serve static files from the React app build directory
+  app.use(express.static(path.join(__dirname, "client", "dist")));
 
-  app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  // Catch all handler: send back React's index.html file for any non-API routes
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
   });
 }
 
