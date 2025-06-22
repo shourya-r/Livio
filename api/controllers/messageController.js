@@ -20,15 +20,23 @@ export const sendMessage = async (req, res) => {
     const io = getIO();
     const connectedUsers = getConnectedUsers();
     
-    // Get the receiver's socket ID
+    // Get both sender's and receiver's socket IDs
+    const senderSocketId = connectedUsers.get(req.user.id.toString());
     const receiverSocketId = connectedUsers.get(receiverId.toString());
     
+    // Emit to receiver if connected
     if (receiverSocketId) {
       console.log(`Emitting newMessage to receiver ${receiverId} at socket ${receiverSocketId}`);
       console.log('Message being emitted:', populatedMessage);
       io.to(receiverSocketId).emit('newMessage', populatedMessage);
     } else {
       console.log(`Receiver ${receiverId} is not connected. Connected users:`, Array.from(connectedUsers.keys()));
+    }
+    
+    // Emit to sender if connected (for real-time feedback)
+    if (senderSocketId) {
+      console.log(`Emitting newMessage to sender ${req.user.id} at socket ${senderSocketId}`);
+      io.to(senderSocketId).emit('newMessage', populatedMessage);
     }
 
     res.status(201).json({

@@ -28,10 +28,9 @@ export const useMessageStore = create((set, get) => ({
         content: content,
       });
 
-      // Add the message to sender's state immediately for instant feedback
-      if (res.data.message) {
-        get().addMessage(res.data.message);
-      }
+      // Don't add message here - it will be received via socket for real-time updates
+      // This prevents duplicates and ensures consistent real-time behavior
+      console.log("Message sent successfully:", res.data.message);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to send message");
     }

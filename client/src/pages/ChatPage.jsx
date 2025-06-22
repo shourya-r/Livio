@@ -24,11 +24,22 @@ const ChatPage = () => {
 
   const match = matches.find((m) => m?._id === id);
 
+  // Helper function to get user ID from message field (handles both populated and unpopulated)
+  const getUserId = (field) => {
+    return typeof field === 'object' && field !== null ? field._id : field;
+  };
+
   // Filter messages for the current conversation
   const conversationMessages = messages.filter(
-    (msg) =>
-      (msg.sender === authUser._id && msg.receiver === id) ||
-      (msg.sender === id && msg.receiver === authUser._id)
+    (msg) => {
+      const senderId = getUserId(msg.sender);
+      const receiverId = getUserId(msg.receiver);
+      
+      return (
+        (senderId === authUser._id && receiverId === id) ||
+        (senderId === id && receiverId === authUser._id)
+      );
+    }
   );
 
   useEffect(() => {
@@ -104,31 +115,36 @@ const ChatPage = () => {
               No messages yet. Start the conversation with {match.name}! 💬
             </p>
           ) : (
-            conversationMessages.map((msg, index) => (
-              <div
-                key={msg._id || index}
-                className={`flex items-end gap-2 ${
-                  msg.sender === authUser._id ? "justify-end" : "justify-start"
-                }`}
-              >
-                {msg.sender !== authUser._id && (
-                  <img
-                    src={match.image || "/avatar.png"}
-                    alt="sender"
-                    className="w-6 h-6 rounded-full border border-gray-200"
-                  />
-                )}
+            conversationMessages.map((msg, index) => {
+              const senderId = getUserId(msg.sender);
+              const isOwnMessage = senderId === authUser._id;
+              
+              return (
                 <div
-                  className={`inline-block p-3 rounded-2xl max-w-xs lg:max-w-md shadow-md ${
-                    msg.sender === authUser._id
-                      ? "bg-blue-500 text-white rounded-br-md"
-                      : "bg-gray-100 text-gray-800 rounded-bl-md border border-gray-200"
+                  key={msg._id || index}
+                  className={`flex items-end gap-2 ${
+                    isOwnMessage ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {msg.content}
+                  {!isOwnMessage && (
+                    <img
+                      src={match.image || "/avatar.png"}
+                      alt="sender"
+                      className="w-6 h-6 rounded-full border border-gray-200"
+                    />
+                  )}
+                  <div
+                    className={`inline-block p-3 rounded-2xl max-w-xs lg:max-w-md shadow-md ${
+                      isOwnMessage
+                        ? "bg-blue-500 text-white rounded-br-md"
+                        : "bg-gray-100 text-gray-800 rounded-bl-md border border-gray-200"
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
           <div ref={messageEndRef} />
         </div>
