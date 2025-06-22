@@ -72,6 +72,11 @@ const Sidebar = () => {
                           <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition-colors duration-200">
                             {match.name}
                           </h3>
+                          {match.location && (
+                            <p className="text-sm text-gray-600 mt-1">
+                              📍 {match.location}
+                            </p>
+                          )}
                         </div>
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           <MessageCircle className="w-5 h-5 text-blue-500" />

@@ -9,6 +9,7 @@ const ProfilePage = () => {
   const [name, setName] = useState(authUser?.name || "");
   const [age, setAge] = useState(authUser?.age || "");
   const [bio, setBio] = useState(authUser?.bio || "");
+  const [location, setLocation] = useState(authUser?.location || "");
   const [gender, setGender] = useState(authUser.gender || "");
   const [genderPreference, setGenderPreference] = useState(
     authUser.genderPreference || []
@@ -21,7 +22,7 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    updateProfile({ name, bio, age, gender, genderPreference, image });
+    updateProfile({ name, bio, age, gender, genderPreference, image, location });
   };
 
   const handleImageChange = (e) => {
@@ -156,6 +157,27 @@ const ProfilePage = () => {
                     rows={3}
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* LOCATION */}
+              <div>
+                <label
+                  htmlFor="location"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  City
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    placeholder="e.g., New York, NY"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>

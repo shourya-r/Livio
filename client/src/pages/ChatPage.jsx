@@ -100,7 +100,14 @@ const ChatPage = () => {
             className="w-12 h-12 object-cover rounded-full mr-4 border-2 border-blue-300 shadow-md"
             alt={`${match.name}'s profile picture`}
           />
-          <h2 className="text-xl font-bold text-blue-600">{match.name}</h2>
+          <div>
+            <h2 className="text-xl font-bold text-blue-600">{match.name}</h2>
+            {match.location && (
+              <p className="text-sm text-gray-600 mt-1">
+                📍 {match.location}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Messages Area */}

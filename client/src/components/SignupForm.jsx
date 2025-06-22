@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { User, Mail, Lock, Calendar, Users, Eye, EyeOff } from "lucide-react";
+import { User, Mail, Lock, Calendar, Users, Eye, EyeOff, MapPin } from "lucide-react";
 
 const SignupForm = () => {
   const [name, setName] = useState("");
@@ -8,6 +8,7 @@ const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
+  const [location, setLocation] = useState("");
   const [genderPreference, setGenderPreference] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -18,7 +19,7 @@ const SignupForm = () => {
       className="space-y-6"
       onSubmit={(e) => {
         e.preventDefault();
-        signup({ name, email, password, age, gender, genderPreference });
+        signup({ name, email, password, age, gender, genderPreference, location });
       }}
     >
       {/* NAME */}
@@ -132,6 +133,31 @@ const SignupForm = () => {
             max="120"
             className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
             placeholder="Enter your age"
+          />
+        </div>
+      </div>
+
+      {/* LOCATION */}
+      <div>
+        <label
+          htmlFor="location"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          City
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <MapPin className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            id="location"
+            name="location"
+            type="text"
+            required
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            placeholder="e.g., New York, NY"
           />
         </div>
       </div>

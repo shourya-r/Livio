@@ -64,7 +64,7 @@ const SwipeArea = () => {
                     <MapPin className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-sm font-medium">
-                    Looking for roommates
+                    {user.location ? `Looking for roommates in ${user.location}` : "Looking for roommates"}
                   </span>
                 </div>
 
