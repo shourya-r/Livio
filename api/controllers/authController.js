@@ -80,7 +80,10 @@ export const login = async (req, res) => {
         message: "All fields are required",
       });
     }
-    const user = await User.findOne({ email }).select("password");
+
+    // Select password explicitly since it might be excluded by default
+    const user = await User.findOne({ email }).select("+password");
+
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({
         success: false,
@@ -90,17 +93,21 @@ export const login = async (req, res) => {
 
     const token = signToken(user._id);
     res.cookie("jwt", token, {
-      maxAge: 5 * 24 * 60 * 60 * 1000, // 5d
-      httpOnly: true, // prevent XSS attacks
-      sameSite: "strict", // prevent CSRF attacks
+      maxAge: 5 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
     });
+
+    // Remove password from response
+    user.password = undefined;
+
     res.status(200).json({
       success: true,
       user,
     });
   } catch (error) {
-    console.log("Error in signup controller:", error);
+    console.log("Error in login controller:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

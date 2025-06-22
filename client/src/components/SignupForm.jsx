@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import { User, Mail, Lock, Calendar, Users, Eye, EyeOff } from "lucide-react";
 
 const SignupForm = () => {
   const [name, setName] = useState("");
@@ -8,6 +9,7 @@ const SignupForm = () => {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [genderPreference, setGenderPreference] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { signup, loading } = useAuthStore();
 
@@ -23,11 +25,14 @@ const SignupForm = () => {
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 mb-2"
         >
-          Name
+          Full Name
         </label>
-        <div className="mt-1">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <User className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             id="name"
             name="name"
@@ -35,7 +40,8 @@ const SignupForm = () => {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            placeholder="Enter your full name"
           />
         </div>
       </div>
@@ -44,11 +50,14 @@ const SignupForm = () => {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 mb-2"
         >
           Email address
         </label>
-        <div className="mt-1">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Mail className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             id="email"
             name="email"
@@ -57,7 +66,8 @@ const SignupForm = () => {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            placeholder="Enter your email"
           />
         </div>
       </div>
@@ -66,21 +76,36 @@ const SignupForm = () => {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 mb-2"
         >
           Password
         </label>
-        <div className="mt-1">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Lock className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             id="password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             autoComplete="new-password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            placeholder="Create a strong password"
           />
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? (
+              <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+            ) : (
+              <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+            )}
+          </button>
         </div>
       </div>
 
@@ -88,11 +113,14 @@ const SignupForm = () => {
       <div>
         <label
           htmlFor="age"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 mb-2"
         >
           Age
         </label>
-        <div className="mt-1">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Calendar className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             id="age"
             name="age"
@@ -102,120 +130,138 @@ const SignupForm = () => {
             onChange={(e) => setAge(e.target.value)}
             min="18"
             max="120"
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+            placeholder="Enter your age"
           />
         </div>
       </div>
+
       {/* GENDER */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 mb-3">
           Your Gender
         </label>
-        <div className="mt-2 flex gap-2">
-          <div className="flex items-center">
+        <div className="grid grid-cols-2 gap-3">
+          <label className="relative">
             <input
-              id="male"
+              type="radio"
               name="gender"
-              type="checkbox"
+              value="male"
               checked={gender === "male"}
-              onChange={() => setGender("male")}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              onChange={(e) => setGender(e.target.value)}
+              className="sr-only"
             />
-            <label htmlFor="male" className="ml-2 block text-sm text-gray-900">
-              Male
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input
-              id="female"
-              name="gender"
-              type="checkbox"
-              checked={gender === "female"}
-              onChange={() => setGender("female")}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label
-              htmlFor="female"
-              className="ml-2 block text-sm text-gray-900"
+            <div
+              className={`p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                gender === "male"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
             >
-              Female
-            </label>
-          </div>
+              <div className="text-center">
+                <div
+                  className={`text-sm font-medium ${
+                    gender === "male" ? "text-blue-700" : "text-gray-700"
+                  }`}
+                >
+                  Male
+                </div>
+              </div>
+            </div>
+          </label>
+          <label className="relative">
+            <input
+              type="radio"
+              name="gender"
+              value="female"
+              checked={gender === "female"}
+              onChange={(e) => setGender(e.target.value)}
+              className="sr-only"
+            />
+            <div
+              className={`p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                gender === "female"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              <div className="text-center">
+                <div
+                  className={`text-sm font-medium ${
+                    gender === "female" ? "text-blue-700" : "text-gray-700"
+                  }`}
+                >
+                  Female
+                </div>
+              </div>
+            </div>
+          </label>
         </div>
       </div>
 
       {/* GENDER PREFERENCE */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Prefer to connect with
-        </label>
-        <div className="mt-2 space-y-2">
+        <div className="block text-sm font-medium text-gray-700 mb-3">
           <div className="flex items-center">
+            <Users className="w-4 h-4 mr-2 text-gray-400" />
+            Prefer to connect with
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-200">
             <input
-              id="prefer-male"
-              name="gender-preference"
               type="radio"
+              name="gender-preference"
               value="male"
               checked={genderPreference === "male"}
               onChange={(e) => setGenderPreference(e.target.value)}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
             />
-            <label
-              htmlFor="prefer-male"
-              className="ml-2 block text-sm text-gray-900"
-            >
-              Male
-            </label>
-          </div>
-          <div className="flex items-center">
+            <span className="ml-3 text-sm text-gray-700">Male roommates</span>
+          </label>
+          <label className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-200">
             <input
-              id="prefer-female"
-              name="gender-preference"
               type="radio"
+              name="gender-preference"
               value="female"
               checked={genderPreference === "female"}
               onChange={(e) => setGenderPreference(e.target.value)}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
             />
-            <label
-              htmlFor="prefer-female"
-              className="ml-2 block text-sm text-gray-900"
-            >
-              Female
-            </label>
-          </div>
-          <div className="flex items-center">
+            <span className="ml-3 text-sm text-gray-700">Female roommates</span>
+          </label>
+          <label className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-200">
             <input
-              id="prefer-both"
-              name="gender-preference"
               type="radio"
+              name="gender-preference"
               value="both"
               checked={genderPreference === "both"}
               onChange={(e) => setGenderPreference(e.target.value)}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
             />
-            <label
-              htmlFor="prefer-both"
-              className="ml-2 block text-sm text-gray-900"
-            >
-              Both
-            </label>
-          </div>
+            <span className="ml-3 text-sm text-gray-700">Any gender</span>
+          </label>
         </div>
       </div>
-      <div>
-        <button
-          type="submit"
-          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-            loading
-              ? "bg-blue-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Signing up..." : "Sign up"}
-        </button>
-      </div>
+
+      <button
+        type="submit"
+        className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-colors duration-200 ${
+          loading
+            ? "bg-blue-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        }`}
+        disabled={loading}
+      >
+        {loading ? (
+          <div className="flex items-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+            Creating account...
+          </div>
+        ) : (
+          "Create account"
+        )}
+      </button>
     </form>
   );
 };

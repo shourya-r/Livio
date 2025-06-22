@@ -6,18 +6,33 @@ import { Frown } from "lucide-react";
 
 import SwipeArea from "../components/SwipeArea";
 import SwipeFeedback from "../components/SwipeFeedback";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
-  const { isLoadingUserProfiles, getUserProfiles, userProfiles } =
-    useMatchStore();
+  const {
+    isLoadingUserProfiles,
+    getUserProfiles,
+    userProfiles,
+    subscribeToNewMatches,
+    unsubscribeFromNewMatches,
+  } = useMatchStore();
+
+  const { authUser } = useAuthStore();
 
   useEffect(() => {
     getUserProfiles();
   }, [getUserProfiles]);
 
+  useEffect(() => {
+    authUser && subscribeToNewMatches(authUser._id);
+    return () => {
+      unsubscribeFromNewMatches();
+    };
+  }, [subscribeToNewMatches, unsubscribeFromNewMatches, authUser]);
+
   return (
     <div
-      className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-blue-100 to-purple-100
+      className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100
 		 overflow-hidden
 		"
     >
@@ -46,27 +61,35 @@ export default HomePage;
 
 const NoMoreProfiles = () => (
   <div className="flex flex-col items-center justify-center h-full text-center p-8">
-    <Frown className="text-blue-400 mb-6" size={80} />
-    <h2 className="text-3xl font-bold text-gray-800 mb-4">
-      Slow down, friend!
+    <div className="bg-blue-100 rounded-full p-6 mb-6">
+      <Frown className="text-blue-600" size={60} />
+    </div>
+    <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+      No more profiles available
     </h2>
-    <p className="text-xl text-gray-600 mb-6">
-      No more profiles to swipe right now. Take a break and come back later!
+    <p className="text-lg text-gray-600 mb-6 max-w-md">
+      You've seen all the available roommate profiles. Check back later for new
+      listings!
     </p>
   </div>
 );
 
 const LoadingUI = () => {
   return (
-    <div className="relative w-full max-w-sm h-[28rem]">
-      <div className="card bg-white w-96 h-[28rem] rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-        <div className="px-4 pt-4 h-3/4">
-          <div className="w-full h-full bg-gray-200 rounded-lg" />
-        </div>
-        <div className="card-body bg-gradient-to-b from-white to-blue-50 p-4">
-          <div className="space-y-2">
-            <div className="h-6 bg-gray-200 rounded w-3/4" />
-            <div className="h-4 bg-gray-200 rounded w-1/2" />
+    <div className="relative w-full max-w-sm h-[32rem]">
+      <div className="w-96 h-[32rem] rounded-xl overflow-hidden shadow-lg bg-white border border-gray-200">
+        <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <div className="space-y-4">
+              <div className="h-7 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+              <div className="h-16 bg-gray-200 rounded animate-pulse"></div>
+              <div className="flex gap-2">
+                <div className="h-6 bg-gray-200 rounded-full w-20 animate-pulse"></div>
+                <div className="h-6 bg-gray-200 rounded-full w-24 animate-pulse"></div>
+                <div className="h-6 bg-gray-200 rounded-full w-20 animate-pulse"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
