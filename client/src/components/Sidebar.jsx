@@ -18,14 +18,14 @@ const Sidebar = () => {
     <>
       <div
         className={`
-          fixed inset-y-0 left-0 z-10 w-80 bg-white border-r border-gray-200 overflow-hidden transition-transform duration-300 ease-in-out shadow-lg
+          fixed inset-y-0 left-0 z-10 w-80 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out shadow-lg
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0 lg:static lg:w-80
+          lg:translate-x-0 lg:static lg:w-80 lg:h-full
         `}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-gray-200 bg-gray-50">
+          <div className="flex-shrink-0 p-6 border-b border-gray-200 bg-gray-50">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <div className="bg-blue-500 p-3 rounded-xl shadow-lg">
@@ -50,7 +50,7 @@ const Sidebar = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-grow overflow-y-auto">
+          <div className="flex-1 overflow-y-auto">
             <div className="p-4">
               {isLoadingMyMatches ? (
                 <LoadingState />

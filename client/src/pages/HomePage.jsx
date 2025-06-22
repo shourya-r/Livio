@@ -31,11 +31,7 @@ const HomePage = () => {
   }, [subscribeToNewMatches, unsubscribeFromNewMatches, authUser]);
 
   return (
-    <div
-      className="flex flex-col lg:flex-row min-h-screen bg-gray-50
-		 overflow-hidden
-		"
-    >
+    <div className="flex flex-col lg:flex-row h-screen bg-gray-50 overflow-hidden">
       <Sidebar />
       <div className="flex-grow flex flex-col overflow-hidden">
         <Header />
