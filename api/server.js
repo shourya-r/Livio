@@ -10,12 +10,15 @@ import userRoutes from "./routes/userRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import matchRoutes from "./routes/matchRoutes.js";
 import { connectDB } from "./config/db.js";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const httpServer = createServer(app);
+
+const __dirname = path.resolve();
 
 initializeSocket(httpServer);
 
@@ -32,6 +35,14 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/matches", matchRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
 
 httpServer.listen(PORT, () => {
   console.log("Listening on port " + PORT);
